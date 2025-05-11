@@ -47,6 +47,7 @@ func (r *Repository) Close() {
 }
 
 // WithMemoryStore applies a memory store to the Repository
+
 //func WithMemoryStore() Configuration {
 //	return func(s *Repository) (err error) {
 //		// Create the memory store, if we needed parameters, such as connection strings they could be inputted here
@@ -59,6 +60,7 @@ func (r *Repository) Close() {
 //}
 
 // WithMongoStore applies a mongo store to the Repository
+
 //func WithMongoStore(uri, name string) Configuration {
 //	return func(s *Repository) (err error) {
 //		// Create the mongo store, if we needed parameters, such as connection strings they could be inputted here
