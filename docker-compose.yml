@@ -2,102 +2,76 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:14
+    container_name: db
     environment:
-      POSTGRES_USER: ${DBUser}
-      POSTGRES_PASSWORD: ${DBPassword}
-      POSTGRES_DB: ${DBName}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tezirek-tamaq
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: pg_isready -U ${DBUser} -d ${DBName}
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tezirek-tamaq"]
       interval: 3s
       timeout: 5s
       retries: 5
 
-
   user-service:
     build:
-      context: store-users-service
-      dockerfile: Dockerfile
+      context: ./user-service
+    container_name: user-service
     environment:
-      - DBHost=db
-      - DBPort=5432
-      - DBUser=${DBUser}
-      - DBPassword=${DBPassword}
-      - DBName=${DBName}
+      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/marketplace?sslmode=disable
+      - APP_PORT=50051
+    ports:
+      - "50051:50051"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8000:8000"
 
-  product-service:
+  restaurant-service:
     build:
-      context: store-products-service
-      dockerfile: Dockerfile
+      context: ./restaurant-service
+    container_name: restaurant-service
     environment:
-      - DBHost=db
-      - DBPort=5432
-      - DBUser=${DBUser}
-      - DBPassword=${DBPassword}
-      - DBName=${DBName}
+      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/marketplace?sslmode=disable
+      - APP_PORT=50053
+    ports:
+      - "50053:50053"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8001:8001"
-
-  payment-service:
-    build:
-      context: store-payments-service
-      dockerfile: Dockerfile
-    environment:
-      - DBHost=db
-      - DBPort=5432
-      - DBUser=${DBUser}
-      - DBPassword=${DBPassword}
-      - DBName=${DBName}
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "8002:8002"
 
   order-service:
     build:
-      context: store-orders-service
-      dockerfile: Dockerfile
+      context: ./order-service
+    container_name: order-service
     environment:
-      - DBHost=db
-      - DBPort=5432
-      - DBUser=${DBUser}
-      - DBPassword=${DBPassword}
-      - DBName=${DBName}
+      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/marketplace?sslmode=disable
+      - APP_PORT=50052
+    ports:
+      - "50052:50052"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8003:8003"
 
   api-gateway:
     build:
-      context: store-api-gateway
-      dockerfile: Dockerfile
-    environment:
-      - userURL=${userURL}
-      - productURL=${productURL}
-      - paymentURL=${paymentURL}
-      - orderURL=${orderURL}
-    depends_on:
-      - user-service
-      - product-service
-      - payment-service
-      - order-service
+      context: ./api-gateway
+    container_name: api-gateway
     ports:
       - "8080:8080"
+    environment:
+      - USER_GRPC_ADDR=user-service:9000
+      - REST_GRPC_ADDR=restaurant-service:9001
+      - ORDER_GRPC_ADDR=order-service:9002
+      - APP_PORT=8080
+    depends_on:
+      - user-service
+      - restaurant-service
+      - order-service
 
 volumes:
   db_data:
