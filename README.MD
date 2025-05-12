@@ -1,58 +1,57 @@
 # 🍽️ Tezirek Tamaq
 
-**Tezirek Tamaq** — это современная платформа доставки еды из ресторанов, основанная на микросервисной архитектуре.  
-Проект реализован с использованием **Golang**, **gRPC**, **PostgreSQL**, **Gin**, **Docker** и **Swagger**.
+**Tezirek Tamaq** is a microservice-based food delivery platform that connects users with restaurants.  
+It’s built with **Golang**, **gRPC**, **PostgreSQL**, **Gin**, **Docker**, and **Swagger**.
 
 ---
 
-## 🧩 Архитектура
+## 🧩 Architecture Overview
 
-Проект состоит из следующих основных сервисов:
+The system is split into the following services:
 
-### 1. **User Service**
-- Регистрация, авторизация и управление пользователями.
-- Поддержка JWT-аутентификации.
-- Хранение ролей: `customer`, `admin`.
+### 🔐 Auth Service
+- Handles user authentication.
+- Generates and validates JWT tokens.
 
-### 2. **Auth Service**
-- Генерация и валидация токенов.
-- Отдельный gRPC-сервис, интегрированный в API Gateway.
+### 👤 User Service
+- Manages user data (registration, retrieval).
+- Supports role-based users (e.g. customer).
 
-### 3. **Restaurant Service**
-- CRUD-операции с ресторанами.
-- Хранит информацию о заказах, связанных с каждым рестораном.
+### 🍽️ Restaurant Service
+- Manages restaurant records (CRUD).
+- Associates restaurants with their orders.
 
-### 4. **Order Service**
-- Создание, изменение и удаление заказов.
-- Привязка заказов к пользователям и ресторанам.
+### 🛒 Order Service
+- Handles order creation, updates, deletion.
+- Connects users and restaurants through orders.
 
-### 5. **API Gateway**
-- HTTP точка входа, реализованная на **Gin**.
-- Выполняет маршрутизацию и проверку JWT.
-- Swagger-документация доступна по адресу: `http://localhost:8080/swagger/index.html`
+### 🌐 API Gateway
+- HTTP gateway using **Gin** framework.
+- Validates JWT tokens.
+- Routes requests to gRPC services.
+- Includes Swagger UI at: `http://localhost:8080/swagger/index.html`
 
 ---
 
-## 📦 Быстрый запуск
+## ⚙️ Getting Started
 
-### 📁 Клонирование репозитория
+### 📁 Clone the Repository
 
 ```bash
 git clone https://github.com/shynkaaaa/tezirek_tamaq.git
-cd tezirek-tamaq
-
+cd tezirek_tamaq
 ```
-## ⚙️ Конфигурация окружения
-### Создайте .env файл и добавьте туда необходимое
+## ⚙️ Environment Configuration
+### Create a .env file and add the necessary variables
 
-## 🚀 Запуск через Docker Compose
+## 🚀  Run with Docker Compose
 ```bash
 docker-compose up --build
 ```
-- Это автоматически поднимет:
+### - This will automatically start:
 - PostgreSQL
-- Все gRPC сервисы (user, restaurant, order, auth)
-- API Gateway с HTTP-интерфейсом
+- All gRPC services (user, restaurant, order, auth)
+- API Gateway with an HTTP interface
 
 ## 🌐 Доступные эндпоинты
 | Сервис              | Порт  | Swagger UI            |
@@ -63,24 +62,24 @@ docker-compose up --build
 | Order Service       | 50052 |                       |
 | Auth Service        | 50051 |                       |
 
-## 🔐 Аутентификация
-### - Используется JWT (JSON Web Token)
-### - Токен добавляется в заголовок запроса:
+## 🔐 Authentication
+### - Uses JWT (JSON Web Token)
+### - The token must be included in the request header:
 ```bash
 Authorization: Bearer <your_token>
 ```
 
-## 📚 Примеры API (через Swagger)
-### - POST /auth/register – регистрация пользователя
-### - POST /auth/login – вход и получение токена
+## 📚 API Examples (via Swagger)
+### - POST /auth/register – user registration
+### - POST /auth/login – login and receive token
 
-### - GET /user/{id} – получить данные пользователя
+### - GET /user/{id} – fetch user data
 
-### - POST /restaurant/create – создать ресторан
+### - POST /restaurant/create – create a new restaurant
 
-### -  POST /order/create – создать заказ
+### -  POST /order/create – place an order
 
-## 🛠️ Используемые технологии
+## 🛠️ Technologies Used
 - Golang
 - gRPC
 
