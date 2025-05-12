@@ -28,3 +28,11 @@ func New(configs ...Configuration) (s *Service, err error) {
 	}
 	return
 }
+
+func WithUserRepository(userRepository user.Repository) Configuration {
+	// Add the book repository, if we needed parameters, such as connection strings they could be inputted here
+	return func(s *Service) error {
+		s.userRepository = userRepository
+		return nil
+	}
+}
