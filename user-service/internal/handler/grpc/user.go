@@ -31,7 +31,7 @@ func (h *UserHandler) CreateUser(ctx context.Context, req *userpb.UpdateRequest)
 
 	createdUser, err := h.service.Create(ctx, userEntity)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to create order: %v", err)
 	}
 
 	return &userpb.UserResponse{
@@ -45,7 +45,7 @@ func (h *UserHandler) CreateUser(ctx context.Context, req *userpb.UpdateRequest)
 func (h *UserHandler) GetUser(ctx context.Context, req *userpb.UserResponse) (*userpb.UserResponse, error) {
 	userEntity, err := h.service.GetByID(ctx, req.Id)
 	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "user not found: %v", err)
+		return nil, status.Errorf(codes.NotFound, "order not found: %v", err)
 	}
 
 	return &userpb.UserResponse{
@@ -66,7 +66,7 @@ func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest)
 
 	err := h.service.Update(ctx, req.Id, updateData)
 	if err != nil {
-		return status.Errorf(codes.Internal, "failed to update user: %v", err)
+		return status.Errorf(codes.Internal, "failed to update order: %v", err)
 	}
 
 	return nil
@@ -75,7 +75,7 @@ func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest)
 func (h *UserHandler) DeleteUser(ctx context.Context, req *userpb.DeleteRequest) (*userpb.Empty, error) {
 	err := h.service.Delete(ctx, req.Id)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to delete user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to delete order: %v", err)
 	}
 
 	return &userpb.Empty{}, nil

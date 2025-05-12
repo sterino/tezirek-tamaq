@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package orderpb;
+
+option go_package = "order-service/proto/gen/orderpb";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// Сервис заказов
+service OrderService {
+  rpc Create(CreateOrderRequest) returns (OrderResponse);
+  rpc GetByID(GetOrderByIDRequest) returns (OrderResponse);
+  rpc Update(UpdateOrderRequest) returns (google.protobuf.Empty);
+  rpc Delete(DeleteOrderRequest) returns (google.protobuf.Empty);
+  rpc List(google.protobuf.Empty) returns (ListOrdersResponse);
+  rpc ListByUser(ListByUserRequest) returns (ListOrdersResponse);
+  rpc ListByRestaurant(ListByRestaurantRequest) returns (ListOrdersResponse);
+}
+
+// Элемент заказа
+message Item {
+  string name = 1;
+  int32 quantity = 2;
+  double price = 3;
+}
+
+// Запрос на создание
+message CreateOrderRequest {
+  string user_id = 1;
+  string restaurant_id = 2;
+  repeated Item items = 3;
+  double total_price = 4;
+  string status = 5;
+}
+
+// Запрос на обновление
+message UpdateOrderRequest {
+  string id = 1;
+  repeated Item items = 2;
+  double total_price = 3;
+  string status = 4;
+}
+
+// Запросы по ID
+message GetOrderByIDRequest {
+  string id = 1;
+}
+message DeleteOrderRequest {
+  string id = 1;
+}
+message ListByUserRequest {
+  string user_id = 1;
+}
+message ListByRestaurantRequest {
+  string restaurant_id = 1;
+}
+
+// Ответ с заказом
+message OrderResponse {
+  string id = 1;
+  string user_id = 2;
+  string restaurant_id = 3;
+  repeated Item items = 4;
+  double total_price = 5;
+  string status = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+// Ответ со списком заказов
+message ListOrdersResponse {
+  repeated OrderResponse orders = 1;
+}

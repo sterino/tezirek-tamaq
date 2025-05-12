@@ -21,7 +21,7 @@ func (s *Service) Create(ctx context.Context, req user.Request) (user.Response, 
 	entity := user.NewCreate(req, hashed)
 	id, err := s.userRepository.Create(ctx, entity)
 	if err != nil {
-		logger.Error("failed to create user", zap.Error(err))
+		logger.Error("failed to create order", zap.Error(err))
 		return user.Response{}, err
 	}
 	entity.ID = id
@@ -35,10 +35,10 @@ func (s *Service) GetByID(ctx context.Context, id string) (user.Response, error)
 	entity, err := s.userRepository.GetByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, store.ErrorNotFound) {
-			logger.Warn("user not found", zap.Error(err))
+			logger.Warn("order not found", zap.Error(err))
 			return user.Response{}, err
 		}
-		logger.Error("failed to get user", zap.Error(err))
+		logger.Error("failed to get order", zap.Error(err))
 		return user.Response{}, err
 	}
 
@@ -51,10 +51,10 @@ func (s *Service) Update(ctx context.Context, id string, req user.Request) error
 	entity := user.NewUpdate(req)
 	if err := s.userRepository.Update(ctx, id, entity); err != nil {
 		if errors.Is(err, store.ErrorNotFound) {
-			logger.Warn("user not found", zap.Error(err))
+			logger.Warn("order not found", zap.Error(err))
 			return err
 		}
-		logger.Error("failed to update user", zap.Error(err))
+		logger.Error("failed to update order", zap.Error(err))
 		return err
 	}
 
@@ -66,10 +66,10 @@ func (s *Service) Delete(ctx context.Context, id string) error {
 
 	if err := s.userRepository.Delete(ctx, id); err != nil {
 		if errors.Is(err, store.ErrorNotFound) {
-			logger.Warn("user not found", zap.Error(err))
+			logger.Warn("order not found", zap.Error(err))
 			return err
 		}
-		logger.Error("failed to delete user", zap.Error(err))
+		logger.Error("failed to delete order", zap.Error(err))
 		return err
 	}
 

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v6.30.2
-// source: proto/user.proto
+// source: proto/order.proto
 
 package userpb
 
@@ -337,7 +337,7 @@ var File_proto_user_proto protoreflect.FileDescriptor
 
 const file_proto_user_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/user.proto\x12\x04user\" \n" +
+	"\x10proto/order.proto\x12\x04user\" \n" +
 	"\x0eGetByIDRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"y\n" +
 	"\rUpdateRequest\x12\x0e\n" +
@@ -354,13 +354,13 @@ const file_proto_user_proto_rawDesc = "" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\"<\n" +
 	"\x10UserListResponse\x12(\n" +
-	"\x05users\x18\x01 \x03(\v2\x12.user.UserResponseR\x05users\"\a\n" +
+	"\x05users\x18\x01 \x03(\v2\x12.order.UserResponseR\x05users\"\a\n" +
 	"\x05Empty2\xc7\x01\n" +
 	"\vUserService\x123\n" +
-	"\aGetByID\x12\x14.user.GetByIDRequest\x1a\x12.user.UserResponse\x12*\n" +
-	"\x06Update\x12\x13.user.UpdateRequest\x1a\v.user.Empty\x12*\n" +
-	"\x06Delete\x12\x13.user.DeleteRequest\x1a\v.user.Empty\x12+\n" +
-	"\x04List\x12\v.user.Empty\x1a\x16.user.UserListResponseB&Z$user-service/proto/gen/userpb;userpbb\x06proto3"
+	"\aGetByID\x12\x14.order.GetByIDRequest\x1a\x12.order.UserResponse\x12*\n" +
+	"\x06Update\x12\x13.order.UpdateRequest\x1a\v.order.Empty\x12*\n" +
+	"\x06Delete\x12\x13.order.DeleteRequest\x1a\v.order.Empty\x12+\n" +
+	"\x04List\x12\v.order.Empty\x1a\x16.order.UserListResponseB&Z$order-service/proto/gen/userpb;userpbb\x06proto3"
 
 var (
 	file_proto_user_proto_rawDescOnce sync.Once
@@ -376,23 +376,23 @@ func file_proto_user_proto_rawDescGZIP() []byte {
 
 var file_proto_user_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_user_proto_goTypes = []any{
-	(*GetByIDRequest)(nil),   // 0: user.GetByIDRequest
-	(*UpdateRequest)(nil),    // 1: user.UpdateRequest
-	(*DeleteRequest)(nil),    // 2: user.DeleteRequest
-	(*UserResponse)(nil),     // 3: user.UserResponse
-	(*UserListResponse)(nil), // 4: user.UserListResponse
-	(*Empty)(nil),            // 5: user.Empty
+	(*GetByIDRequest)(nil),   // 0: order.GetByIDRequest
+	(*UpdateRequest)(nil),    // 1: order.UpdateRequest
+	(*DeleteRequest)(nil),    // 2: order.DeleteRequest
+	(*UserResponse)(nil),     // 3: order.UserResponse
+	(*UserListResponse)(nil), // 4: order.UserListResponse
+	(*Empty)(nil),            // 5: order.Empty
 }
 var file_proto_user_proto_depIdxs = []int32{
-	3, // 0: user.UserListResponse.users:type_name -> user.UserResponse
-	0, // 1: user.UserService.GetByID:input_type -> user.GetByIDRequest
-	1, // 2: user.UserService.Update:input_type -> user.UpdateRequest
-	2, // 3: user.UserService.Delete:input_type -> user.DeleteRequest
-	5, // 4: user.UserService.List:input_type -> user.Empty
-	3, // 5: user.UserService.GetByID:output_type -> user.UserResponse
-	5, // 6: user.UserService.Update:output_type -> user.Empty
-	5, // 7: user.UserService.Delete:output_type -> user.Empty
-	4, // 8: user.UserService.List:output_type -> user.UserListResponse
+	3, // 0: order.UserListResponse.users:type_name -> order.UserResponse
+	0, // 1: order.UserService.GetByID:input_type -> order.GetByIDRequest
+	1, // 2: order.UserService.Update:input_type -> order.UpdateRequest
+	2, // 3: order.UserService.Delete:input_type -> order.DeleteRequest
+	5, // 4: order.UserService.List:input_type -> order.Empty
+	3, // 5: order.UserService.GetByID:output_type -> order.UserResponse
+	5, // 6: order.UserService.Update:output_type -> order.Empty
+	5, // 7: order.UserService.Delete:output_type -> order.Empty
+	4, // 8: order.UserService.List:output_type -> order.UserListResponse
 	5, // [5:9] is the sub-list for method output_type
 	1, // [1:5] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

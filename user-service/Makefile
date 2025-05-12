@@ -1,6 +1,6 @@
 # Сборка образа Docker
 build:
-	docker build -t library-service .
+	docker build -t user-service .
 
 # Запуск контейнеров
 up:

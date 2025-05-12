@@ -81,7 +81,7 @@ func Run() {
 	}
 
 	servers, err := server.New(
-		server.WithHTTPServer(handlers.GRPC, configs.APP.Port))
+		server.WithGRPCServer(handlers.GRPC, configs.APP.Port))
 	if err != nil {
 		logger.Error("ERR_INIT_SERVERS", zap.Error(err))
 		return
