@@ -22,7 +22,7 @@ func LoadConfig() Config {
 	_ = godotenv.Load(".env") // Загружаем переменные окружения
 
 	cfg := Config{
-		AppPort:       getEnv("APP_PORT", "8000"),
+		AppPort:       getEnv("APP_PORT", "8080"),
 		JWTSecret:     getEnv("JWT_SECRET", "super-secret"),
 		AuthGRPCAddr:  getEnv("AUTH_GRPC_ADDR", "localhost:50051"),
 		UserGRPCAddr:  getEnv("USER_GRPC_ADDR", "localhost:50051"),
