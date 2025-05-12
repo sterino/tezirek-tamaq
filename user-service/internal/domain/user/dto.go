@@ -14,7 +14,6 @@ type Response struct {
 	Role  string `json:"role"`
 }
 
-// ParseFromEntity maps Entity to Response
 func ParseFromEntity(e Entity) Response {
 	return Response{
 		ID:    e.ID,
@@ -24,7 +23,6 @@ func ParseFromEntity(e Entity) Response {
 	}
 }
 
-// ParseFromEntities maps []Entity to []Response
 func ParseFromEntities(data []Entity) []Response {
 	result := make([]Response, len(data))
 	for i, u := range data {
@@ -32,5 +30,3 @@ func ParseFromEntities(data []Entity) []Response {
 	}
 	return result
 }
-
-// NewFromUpdateRequest maps UpdateRequest to Entity

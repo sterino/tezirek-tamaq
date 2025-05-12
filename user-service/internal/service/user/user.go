@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"user-service/pkg/password"
 
 	"user-service/internal/domain/user"
 	"user-service/pkg/log"
@@ -11,10 +12,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Service) Create(ctx context.Context, req user.Request, hashedPassword string) (user.Response, error) {
+func (s *Service) Create(ctx context.Context, req user.Request) (user.Response, error) {
 	logger := log.LoggerFromContext(ctx).Named("create_user").With(zap.String("email", req.Email))
-
-	entity := user.New(req, hashedPassword)
+	hashed, err := password.Generate(req.Password)
+	if err != nil {
+		return user.Response{}, err
+	}
+	entity := user.NewCreate(req, hashed)
 	id, err := s.userRepository.Create(ctx, entity)
 	if err != nil {
 		logger.Error("failed to create user", zap.Error(err))
@@ -41,10 +45,10 @@ func (s *Service) GetByID(ctx context.Context, id string) (user.Response, error)
 	return user.ParseFromEntity(entity), nil
 }
 
-func (s *Service) Update(ctx context.Context, id string, req user.Request, hashedPassword string) error {
+func (s *Service) Update(ctx context.Context, id string, req user.Request) error {
 	logger := log.LoggerFromContext(ctx).Named("update_user").With(zap.String("id", id), zap.Any("req", req))
 
-	entity := user.New(req, hashedPassword)
+	entity := user.NewUpdate(req)
 	if err := s.userRepository.Update(ctx, id, entity); err != nil {
 		if errors.Is(err, store.ErrorNotFound) {
 			logger.Warn("user not found", zap.Error(err))

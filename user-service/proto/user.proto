@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package user;
+option go_package = "user-service/proto/gen/userpb;userpb";
+
+service UserService {
+  rpc GetByID(GetByIDRequest) returns (UserResponse);
+  rpc Update(UpdateRequest) returns (Empty);
+  rpc Delete(DeleteRequest) returns (Empty);
+  rpc List(Empty) returns (UserListResponse);
+}
+
+message GetByIDRequest {
+  string id = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string role = 4;
+  string password = 5;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string role = 4;
+}
+
+message UserListResponse {
+  repeated UserResponse users = 1;
+}
+
+message Empty {}

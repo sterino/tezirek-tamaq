@@ -1,20 +1,25 @@
 package handler
 
 import (
+	"google.golang.org/grpc"
 	"user-service/internal/config"
+	handlers "user-service/internal/handler/grpc"
 	"user-service/internal/service/auth"
 	"user-service/internal/service/user"
+	authpb "user-service/proto/gen/authpb"
+	userpb "user-service/proto/gen/userpb"
 )
 
 type Dependencies struct {
-	Configs config.Configs
+	Configs     config.Configs
+	UserService *user.Service
+	AuthService *auth.Service
 }
 
 type Configuration func(h *Handler) error
 type Handler struct {
 	dependencies Dependencies
-	userService  *user.Service
-	authService  *auth.Service
+	GRPC         *grpc.Server
 }
 
 func New(d Dependencies, configs ...Configuration) (h *Handler, err error) {
@@ -32,4 +37,16 @@ func New(d Dependencies, configs ...Configuration) (h *Handler, err error) {
 	}
 
 	return
+}
+
+func WithGRPCHandler() Configuration {
+	return func(h *Handler) error {
+		h.GRPC = grpc.NewServer()
+
+		// Регистрация gRPC-сервисов
+		authpb.RegisterAuthServiceServer(h.GRPC, handlers.NewAuthHandler(h.dependencies.AuthService))
+		userpb.RegisterUserServiceServer(h.GRPC, handlers.NewUserHandler(h.dependencies.UserService))
+
+		return nil
+	}
 }

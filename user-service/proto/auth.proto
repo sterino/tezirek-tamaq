@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package auth;
+option go_package = "user-service/proto/gen/authpb;authpb";
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (UserIDResponse);
+  rpc Login(LoginRequest) returns (TokenResponse);
+}
+
+message RegisterRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message UserIDResponse {
+  string id = 1;
+}
+
+message TokenResponse {
+  string token = 1;
+}
