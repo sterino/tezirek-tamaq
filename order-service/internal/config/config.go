@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"path/filepath"
 	"time"
 
@@ -11,7 +10,7 @@ import (
 
 const (
 	defaultAppMode    = "dev"
-	defaultAppPort    = "8080"
+	defaultAppPort    = "50052" // уникальный порт для order-service
 	defaultAppPath    = "/"
 	defaultAppTimeout = 60 * time.Second
 
@@ -27,50 +26,36 @@ type (
 	}
 
 	AppConfig struct {
-		Mode    string `required:"true"`
-		Port    string
-		Path    string
-		Timeout time.Duration
+		Mode    string        `envconfig:"MODE" default:"dev"`
+		Port    string        `envconfig:"PORT" default:"50052"`
+		Path    string        `envconfig:"PATH" default:"/"`
+		Timeout time.Duration `envconfig:"TIMEOUT" default:"60s"`
 	}
 
 	TokenConfig struct {
-		Salt    string
-		Expires time.Duration
+		Salt    string        `envconfig:"SALT" default:"IP03O5Ekg91g5jw=="`
+		Expires time.Duration `envconfig:"EXPIRES" default:"3600s"`
 	}
 
 	StoreConfig struct {
-		DSN string
+		DSN string `envconfig:"DSN" required:"true"`
 	}
 )
 
-// New populates Configs struct with values from config file
-// located at filepath and environment variables.
-func New() (cfg Configs, err error) {
-	root, err := os.Getwd()
-	if err != nil {
-		return
-	}
-	godotenv.Load(filepath.Join(root, ".env"))
+func New() (*Configs, error) {
+	_ = godotenv.Load(filepath.Join(".", ".env"))
 
-	cfg.APP = AppConfig{
-		Mode:    defaultAppMode,
-		Port:    defaultAppPort,
-		Path:    defaultAppPath,
-		Timeout: defaultAppTimeout,
-	}
+	cfg := &Configs{}
 
-	cfg.TOKEN = TokenConfig{
-		Salt:    defaultTokenSalt,
-		Expires: defaultTokenExpires,
+	if err := envconfig.Process("APP", &cfg.APP); err != nil {
+		return nil, err
+	}
+	if err := envconfig.Process("TOKEN", &cfg.TOKEN); err != nil {
+		return nil, err
+	}
+	if err := envconfig.Process("POSTGRES", &cfg.POSTGRES); err != nil {
+		return nil, err
 	}
 
-	if err = envconfig.Process("APP", &cfg.APP); err != nil {
-		return
-	}
-
-	if err = envconfig.Process("POSTGRES", &cfg.POSTGRES); err != nil {
-		return
-	}
-
-	return
+	return cfg, nil
 }

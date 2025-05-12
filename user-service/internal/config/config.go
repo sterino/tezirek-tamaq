@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"path/filepath"
 	"time"
 
@@ -11,7 +10,7 @@ import (
 
 const (
 	defaultAppMode    = "dev"
-	defaultAppPort    = "8080"
+	defaultAppPort    = "50051"
 	defaultAppPath    = "/"
 	defaultAppTimeout = 60 * time.Second
 
@@ -21,56 +20,42 @@ const (
 
 type (
 	Configs struct {
-		APP      AppConfig
-		TOKEN    TokenConfig
-		POSTGRES StoreConfig
+		App      AppConfig
+		Token    TokenConfig
+		Postgres StoreConfig
 	}
 
 	AppConfig struct {
-		Mode    string `required:"true"`
-		Port    string
-		Path    string
-		Timeout time.Duration
+		Mode    string        `envconfig:"MODE" default:"dev"`
+		Port    string        `envconfig:"PORT" default:"50051"`
+		Path    string        `envconfig:"PATH" default:"/"`
+		Timeout time.Duration `envconfig:"TIMEOUT" default:"60s"`
 	}
 
 	TokenConfig struct {
-		Salt    string
-		Expires time.Duration
+		Salt    string        `envconfig:"SALT" default:"IP03O5Ekg91g5jw=="`
+		Expires time.Duration `envconfig:"EXPIRES" default:"3600s"`
 	}
 
 	StoreConfig struct {
-		DSN string
+		DSN string `envconfig:"DSN" required:"true"`
 	}
 )
 
-// New populates Configs struct with values from config file
-// located at filepath and environment variables.
-func New() (cfg Configs, err error) {
-	root, err := os.Getwd()
-	if err != nil {
-		return
-	}
-	godotenv.Load(filepath.Join(root, ".env"))
+func New() (*Configs, error) {
+	_ = godotenv.Load(filepath.Join(".", ".env"))
 
-	cfg.APP = AppConfig{
-		Mode:    defaultAppMode,
-		Port:    defaultAppPort,
-		Path:    defaultAppPath,
-		Timeout: defaultAppTimeout,
-	}
+	cfg := &Configs{}
 
-	cfg.TOKEN = TokenConfig{
-		Salt:    defaultTokenSalt,
-		Expires: defaultTokenExpires,
+	if err := envconfig.Process("APP", &cfg.App); err != nil {
+		return nil, err
+	}
+	if err := envconfig.Process("TOKEN", &cfg.Token); err != nil {
+		return nil, err
+	}
+	if err := envconfig.Process("POSTGRES", &cfg.Postgres); err != nil {
+		return nil, err
 	}
 
-	if err = envconfig.Process("APP", &cfg.APP); err != nil {
-		return
-	}
-
-	if err = envconfig.Process("POSTGRES", &cfg.POSTGRES); err != nil {
-		return
-	}
-
-	return
+	return cfg, nil
 }

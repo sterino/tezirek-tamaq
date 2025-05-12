@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package restaurantpb;
+
+option go_package = "restaurant-service/proto/gen/restaurantpb";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Restaurant service definition
+service RestaurantService {
+  rpc Create(CreateRestaurantRequest) returns (RestaurantResponse);
+  rpc GetByID(GetRestaurantByIDRequest) returns (RestaurantResponse);
+  rpc Update(UpdateRestaurantRequest) returns (google.protobuf.Empty);
+  rpc Delete(DeleteRestaurantRequest) returns (google.protobuf.Empty);
+  rpc List(google.protobuf.Empty) returns (ListRestaurantsResponse);
+}
+
+// Request to create a restaurant
+message CreateRestaurantRequest {
+  string name = 1;
+  string address = 2;
+  string phone = 3;
+  repeated string order_ids = 4;
+}
+
+// Request to update a restaurant
+message UpdateRestaurantRequest {
+  string id = 1;
+  string name = 2;
+  string address = 3;
+  string phone = 4;
+  repeated string order_ids = 5;
+}
+
+// Request to get a restaurant by ID
+message GetRestaurantByIDRequest {
+  string id = 1;
+}
+
+// Request to delete a restaurant by ID
+message DeleteRestaurantRequest {
+  string id = 1;
+}
+
+// Single restaurant response
+message RestaurantResponse {
+  string id = 1;
+  string name = 2;
+  string address = 3;
+  string phone = 4;
+  repeated string order_ids = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+// Response with a list of restaurants
+message ListRestaurantsResponse {
+  repeated RestaurantResponse restaurants = 1;
+}
