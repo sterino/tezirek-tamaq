@@ -20,7 +20,7 @@ func NewUserHandler(s *user.Service) *UserHandler {
 	return &UserHandler{service: s}
 }
 
-func (h *UserHandler) GetUser(ctx context.Context, req *userpb.GetByIDRequest) (*userpb.UserResponse, error) {
+func (h *UserHandler) GetByID(ctx context.Context, req *userpb.GetByIDRequest) (*userpb.UserResponse, error) {
 	userEntity, err := h.service.GetByID(ctx, req.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "order not found: %v", err)
@@ -34,7 +34,9 @@ func (h *UserHandler) GetUser(ctx context.Context, req *userpb.GetByIDRequest) (
 	}, nil
 }
 
-func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest) (*userpb.Empty, error) {
+//func GetByEmail
+
+func (h *UserHandler) Update(ctx context.Context, req *userpb.UpdateRequest) (*userpb.Empty, error) {
 	updateData := domain.Request{
 		Name:  req.Name,
 		Email: req.Email,
@@ -49,7 +51,7 @@ func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest)
 	return &userpb.Empty{}, nil
 }
 
-func (h *UserHandler) DeleteUser(ctx context.Context, req *userpb.DeleteRequest) (*userpb.Empty, error) {
+func (h *UserHandler) Delete(ctx context.Context, req *userpb.DeleteRequest) (*userpb.Empty, error) {
 	err := h.service.Delete(ctx, req.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete order: %v", err)

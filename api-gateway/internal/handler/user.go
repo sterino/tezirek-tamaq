@@ -31,7 +31,7 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 
 	res, err := h.client.GetByID(context.Background(), &userpb.GetByIDRequest{Id: id})
 	if err != nil {
-		response.NewError(c, http.StatusNotFound, "user not found")
+		response.NewError(c, http.StatusNotFound, err.Error())
 		return
 	}
 

@@ -34,12 +34,9 @@ func (s *Service) Login(ctx context.Context, req auth.Request) (string, int64, e
 		return "", 0, err
 	}
 
-	hashed, err := password.Generate(req.Password)
-
-	if res := password.Compare(u.Password, hashed); res == false {
+	if res := password.Compare(req.Password, u.Password); res == false {
 		log.Printf("Password comparison failed for user: %s", req.Email)
 		log.Printf("Password comparison failed: %s", u.Password)
-		log.Printf("Password comparison failed: %s", hashed)
 		return "", 0, errors.New("invalid password")
 	}
 	token, expiredAt, err := jwt.Encode(jwt.JWT{

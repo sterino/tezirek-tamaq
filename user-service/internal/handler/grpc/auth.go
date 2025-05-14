@@ -37,7 +37,7 @@ func (h *AuthHandler) Register(ctx context.Context, req *authpb.RegisterRequest)
 		Email:    req.Email,
 		Password: req.Password,
 		Name:     req.Name,
-		Role:     "order",
+		Role:     "user",
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "registration failed: %v", err)
