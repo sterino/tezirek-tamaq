@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"errors"
+	"log"
 	"user-service/internal/domain/auth"
 	"user-service/internal/domain/user"
 	"user-service/pkg/jwt"
@@ -15,7 +16,7 @@ func (s *Service) Register(ctx context.Context, req user.Request) (string, error
 	if err != nil {
 		return "", err
 	}
-
+	log.Printf("Password: %s", req.Password)
 	userEntity := user.Entity{
 		Name:     req.Name,
 		Email:    req.Email,
@@ -33,7 +34,12 @@ func (s *Service) Login(ctx context.Context, req auth.Request) (string, int64, e
 		return "", 0, err
 	}
 
-	if res := password.Compare(u.Password, req.Password); res == false {
+	hashed, err := password.Generate(req.Password)
+
+	if res := password.Compare(u.Password, hashed); res == false {
+		log.Printf("Password comparison failed for user: %s", req.Email)
+		log.Printf("Password comparison failed: %s", u.Password)
+		log.Printf("Password comparison failed: %s", hashed)
 		return "", 0, errors.New("invalid password")
 	}
 	token, expiredAt, err := jwt.Encode(jwt.JWT{

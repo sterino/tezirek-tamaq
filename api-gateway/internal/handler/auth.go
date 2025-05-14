@@ -36,7 +36,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 
 	res, err := h.client.Login(c.Request.Context(), &req)
 	if err != nil {
-		response.NewError(c, http.StatusUnauthorized, "invalid credentials")
+		response.NewError(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 

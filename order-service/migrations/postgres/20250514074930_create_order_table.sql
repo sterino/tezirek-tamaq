@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE orders (
-                          id             UUID PRIMARY KEY,
+                          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                           user_id        UUID NOT NULL,
                           restaurant_id  UUID NOT NULL,
                           items          JSONB NOT NULL,
