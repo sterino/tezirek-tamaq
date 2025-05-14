@@ -20,29 +20,7 @@ func NewUserHandler(s *user.Service) *UserHandler {
 	return &UserHandler{service: s}
 }
 
-func (h *UserHandler) CreateUser(ctx context.Context, req *userpb.UpdateRequest) (*userpb.UserResponse, error) {
-
-	userEntity := domain.Request{
-		Name:     req.Name,
-		Email:    req.Email,
-		Password: req.Password,
-		Role:     req.Role,
-	}
-
-	createdUser, err := h.service.Create(ctx, userEntity)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create order: %v", err)
-	}
-
-	return &userpb.UserResponse{
-		Id:    createdUser.ID,
-		Name:  createdUser.Name,
-		Email: createdUser.Email,
-		Role:  createdUser.Role,
-	}, nil
-}
-
-func (h *UserHandler) GetUser(ctx context.Context, req *userpb.UserResponse) (*userpb.UserResponse, error) {
+func (h *UserHandler) GetUser(ctx context.Context, req *userpb.GetByIDRequest) (*userpb.UserResponse, error) {
 	userEntity, err := h.service.GetByID(ctx, req.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "order not found: %v", err)
@@ -56,8 +34,7 @@ func (h *UserHandler) GetUser(ctx context.Context, req *userpb.UserResponse) (*u
 	}, nil
 }
 
-func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest) error {
-
+func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest) (*userpb.Empty, error) {
 	updateData := domain.Request{
 		Name:  req.Name,
 		Email: req.Email,
@@ -66,10 +43,10 @@ func (h *UserHandler) UpdateUser(ctx context.Context, req *userpb.UpdateRequest)
 
 	err := h.service.Update(ctx, req.Id, updateData)
 	if err != nil {
-		return status.Errorf(codes.Internal, "failed to update order: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to update user: %v", err)
 	}
 
-	return nil
+	return &userpb.Empty{}, nil
 }
 
 func (h *UserHandler) DeleteUser(ctx context.Context, req *userpb.DeleteRequest) (*userpb.Empty, error) {

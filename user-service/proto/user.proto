@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package user;
-option go_package = "order-service/proto/gen/userpb;userpb";
+option go_package = "user-service/proto/gen/userpb;userpb";
 
 service UserService {
   rpc GetByID(GetByIDRequest) returns (UserResponse);
@@ -13,6 +13,7 @@ service UserService {
 message GetByIDRequest {
   string id = 1;
 }
+
 
 message UpdateRequest {
   string id = 1;

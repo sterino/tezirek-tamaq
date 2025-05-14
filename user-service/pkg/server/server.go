@@ -73,7 +73,7 @@ func (s *Server) Stop(ctx context.Context) (err error) {
 
 func WithGRPCServer(grpcServer *grpc.Server, port string) Configuration {
 	return func(s *Server) (err error) {
-		s.listener, err = net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
+		s.listener, err = net.Listen("tcp", fmt.Sprintf(":%s", port)) // ✅ правильно
 		if err != nil {
 			return
 		}

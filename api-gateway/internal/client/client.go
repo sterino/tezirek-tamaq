@@ -9,9 +9,9 @@ type Clients struct {
 
 func InitClients() *Clients {
 	return &Clients{
-		Auth:       InitAuthClient("localhost:50051"),
-		User:       InitUserClient("localhost:50052"),
-		Order:      InitOrderClient("localhost:50053"),
-		Restaurant: InitRestaurantClient("localhost:50054"),
+		Auth:       InitAuthClient("user-service:50051"), // Auth реализован в user-service
+		User:       InitUserClient("user-service:50051"),
+		Order:      InitOrderClient("order-service:50052"),
+		Restaurant: InitRestaurantClient("restaurant-service:50053"),
 	}
 }

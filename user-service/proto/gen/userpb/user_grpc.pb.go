@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.30.2
-// source: proto/order.proto
+// source: user.proto
 
 package userpb
 
@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_GetByID_FullMethodName = "/order.UserService/GetByID"
-	UserService_Update_FullMethodName  = "/order.UserService/Update"
-	UserService_Delete_FullMethodName  = "/order.UserService/Delete"
-	UserService_List_FullMethodName    = "/order.UserService/List"
+	UserService_GetByID_FullMethodName = "/user.UserService/GetByID"
+	UserService_Update_FullMethodName  = "/user.UserService/Update"
+	UserService_Delete_FullMethodName  = "/user.UserService/Delete"
+	UserService_List_FullMethodName    = "/user.UserService/List"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -210,7 +210,7 @@ func _UserService_List_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "order.UserService",
+	ServiceName: "user.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -231,5 +231,5 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/order.proto",
+	Metadata: "user.proto",
 }

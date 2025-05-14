@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.30.2
-// source: proto/restaurant.proto
+// source: restaurant.proto
 
 package restaurantpb
 
@@ -274,5 +274,5 @@ var RestaurantService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/restaurant.proto",
+	Metadata: "restaurant.proto",
 }

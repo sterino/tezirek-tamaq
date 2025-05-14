@@ -4,6 +4,7 @@ import (
 	"api-gateway/pkg/response"
 	"api-gateway/proto/gen/authpb"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -62,6 +63,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 
 	res, err := h.client.Register(c.Request.Context(), &req)
 	if err != nil {
+		log.Printf("gRPC registration error: %v", err)
 		response.NewError(c, http.StatusInternalServerError, "registration failed")
 		return
 	}

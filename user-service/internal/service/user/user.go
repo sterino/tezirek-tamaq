@@ -3,31 +3,12 @@ package user
 import (
 	"context"
 	"errors"
-	"user-service/pkg/password"
-
 	"user-service/internal/domain/user"
 	"user-service/pkg/log"
 	"user-service/pkg/store"
 
 	"go.uber.org/zap"
 )
-
-func (s *Service) Create(ctx context.Context, req user.Request) (user.Response, error) {
-	logger := log.LoggerFromContext(ctx).Named("create_user").With(zap.String("email", req.Email))
-	hashed, err := password.Generate(req.Password)
-	if err != nil {
-		return user.Response{}, err
-	}
-	entity := user.NewCreate(req, hashed)
-	id, err := s.userRepository.Create(ctx, entity)
-	if err != nil {
-		logger.Error("failed to create order", zap.Error(err))
-		return user.Response{}, err
-	}
-	entity.ID = id
-
-	return user.ParseFromEntity(entity), nil
-}
 
 func (s *Service) GetByID(ctx context.Context, id string) (user.Response, error) {
 	logger := log.LoggerFromContext(ctx).Named("get_user").With(zap.String("id", id))

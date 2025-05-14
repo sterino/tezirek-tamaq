@@ -2,6 +2,7 @@ package main
 
 import (
 	"api-gateway/config"
+	_ "api-gateway/docs"
 	"api-gateway/internal/client"
 	"api-gateway/internal/handler"
 	api "api-gateway/internal/server"
@@ -12,7 +13,7 @@ import (
 // @title           Food Delivery API Gateway
 // @version         1.0
 // @description     Gateway for microservices
-// @host            localhost:8000
+// @host            localhost:8080
 // @BasePath        /api
 // @securityDefinitions.apikey BearerAuth
 // @in header

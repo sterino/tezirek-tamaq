@@ -1,5 +1,5 @@
 # Define the base image to use for building the application (Go 1.21.1 on Alpine Linux)
-FROM golang:1.19-alpine as builder
+FROM golang:1.24-alpine as builder
 
 # Install necessary dependencies, including OpenSSL and development tools
 # RUN apk add --update --no-cache openssl curl g++ gcc libxslt-dev

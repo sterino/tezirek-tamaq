@@ -1,5 +1,5 @@
 # Define the base image to use for building the application (Go 1.21.1 on Alpine Linux)
-FROM golang:1.19-alpine as builder
+FROM golang:1.24-alpine as builder
 
 # Install necessary dependencies, including OpenSSL and development tools
 # RUN apk add --update --no-cache openssl curl g++ gcc libxslt-dev
@@ -27,7 +27,8 @@ FROM alpine:3.18 as hoster
 
 # Copy configuration files, assets, templates, and the built application from the builder stage
 COPY --from=builder /build/.env ./.env
+COPY --from=builder /build/migrations ./migrations
 COPY --from=builder /build/order-service ./order-service
 
 # Define the entry point for the final application image
-ENTRYPOINT [ "./order-service" ]
+ENTRYPOINT [ "sh", "-c", "sleep 2 && ./order-service" ]

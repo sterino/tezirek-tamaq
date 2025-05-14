@@ -43,8 +43,8 @@ func NewServer(
 }
 
 func (s *Server) Run(infoLog *log.Logger, errorLog *log.Logger) {
-	infoLog.Printf("starting server on: 8000")
-	err := s.engine.Run(":8000")
+	infoLog.Printf("starting server on: 8080")
+	err := s.engine.Run(":8080")
 	errorLog.Fatal(err)
 }
 

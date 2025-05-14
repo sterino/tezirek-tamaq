@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package auth;
-option go_package = "order-service/proto/gen/authpb;authpb";
+option go_package = "api-gateway/proto/gen/authpb;authpb";
 
 service AuthService {
   rpc Register(RegisterRequest) returns (UserIDResponse);

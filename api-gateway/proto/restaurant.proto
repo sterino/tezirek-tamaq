@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package restaurantpb;
 
-option go_package = "restaurant-service/proto/gen/restaurantpb";
+option go_package = "api-service/proto/gen/restaurantpb";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";

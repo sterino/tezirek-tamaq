@@ -5,6 +5,7 @@ import (
 	"order-service/internal/config"
 	handlers "order-service/internal/handler/grpc"
 	"order-service/internal/service/order"
+	"order-service/proto/gen/orderpb"
 )
 
 type Dependencies struct {
@@ -40,7 +41,7 @@ func WithGRPCHandler() Configuration {
 		h.GRPC = grpc.NewServer()
 
 		// Регистрация gRPC-сервисов
-		authpb.RegisterOrderServiceServer(h.GRPC, handlers.NewOrderHandler(h.dependencies.OrderService))
+		orderpb.RegisterOrderServiceServer(h.GRPC, handlers.NewOrderHandler(h.dependencies.OrderService))
 
 		return nil
 	}

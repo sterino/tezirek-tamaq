@@ -29,10 +29,11 @@ func New(configs ...Configuration) (s *Service, err error) {
 	return
 }
 
-func WithUserRepository(userRepository user.Repository) Configuration {
+func WithUserRepository(userRepository user.Repository, secretKey []byte) Configuration {
 	// Add the book repository, if we needed parameters, such as connection strings they could be inputted here
 	return func(s *Service) error {
 		s.userRepository = userRepository
+		s.secretKey = secretKey
 		return nil
 	}
 }

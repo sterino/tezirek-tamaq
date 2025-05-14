@@ -7,13 +7,13 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: tezirek-tamaq
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d tezirek-tamaq"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 3s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
       context: ./user-service
     container_name: user-service
     environment:
-      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/marketplace?sslmode=disable
+      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
       - APP_PORT=50051
     ports:
       - "50051:50051"
@@ -36,7 +36,7 @@ services:
       context: ./restaurant-service
     container_name: restaurant-service
     environment:
-      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/marketplace?sslmode=disable
+      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
       - APP_PORT=50053
     ports:
       - "50053:50053"
@@ -49,7 +49,7 @@ services:
       context: ./order-service
     container_name: order-service
     environment:
-      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/marketplace?sslmode=disable
+      - POSTGRES_DSN=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
       - APP_PORT=50052
     ports:
       - "50052:50052"
@@ -64,9 +64,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - USER_GRPC_ADDR=user-service:9000
-      - REST_GRPC_ADDR=restaurant-service:9001
-      - ORDER_GRPC_ADDR=order-service:9002
+      - USER_GRPC_ADDR=user-service:50051
+      - AUTH_GRPC_ADDR=user-service:50051
+      - ORDER_GRPC_ADDR=order-service:50052
+      - REST_GRPC_ADDR=restaurant-service:50053
       - APP_PORT=8080
     depends_on:
       - user-service
@@ -75,3 +76,7 @@ services:
 
 volumes:
   db_data:
+
+networks:
+  default:
+    name: app-network

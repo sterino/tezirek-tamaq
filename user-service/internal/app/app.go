@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"user-service/pkg/jwt"
 
 	"user-service/internal/config"
 	"user-service/internal/handler"
@@ -36,8 +37,9 @@ func Run() {
 	defer repositories.Close()
 
 	// Init services
+	secretKey := jwt.ProvideSecretKey()
 	authService, err := auth.New(
-		auth.WithUserRepository(repositories.User))
+		auth.WithUserRepository(repositories.User, secretKey))
 	if err != nil {
 		logger.Fatal("failed to init auth service", zap.Error(err))
 	}

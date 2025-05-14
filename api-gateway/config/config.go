@@ -24,10 +24,10 @@ func LoadConfig() Config {
 	cfg := Config{
 		AppPort:       getEnv("APP_PORT", "8080"),
 		JWTSecret:     getEnv("JWT_SECRET", "super-secret"),
-		AuthGRPCAddr:  getEnv("AUTH_GRPC_ADDR", "localhost:50051"),
-		UserGRPCAddr:  getEnv("USER_GRPC_ADDR", "localhost:50051"),
-		OrderGRPCAddr: getEnv("ORDER_GRPC_ADDR", "localhost:50052"),
-		RestGRPCAddr:  getEnv("RESTAURANT_GRPC_ADDR", "localhost:50053"),
+		AuthGRPCAddr:  getEnv("AUTH_GRPC_ADDR", "user-service:50051"),
+		UserGRPCAddr:  getEnv("USER_GRPC_ADDR", "user-service:50051"),
+		OrderGRPCAddr: getEnv("ORDER_GRPC_ADDR", "order-service:50052"),
+		RestGRPCAddr:  getEnv("RESTAURANT_GRPC_ADDR", "restaurant-service:50053"),
 		Timeout:       10 * time.Second,
 	}
 
